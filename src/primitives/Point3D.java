@@ -4,14 +4,19 @@ import java.util.Objects;
 /**
  * basic Point for RayTracing project in 3D
  *
+ * @author odelia
+ * updated
  */
 
 public class Point3D {
+    // 3 Coordinate values representing 1 point
+    final Coordinate x;
+    final Coordinate y;
+    final Coordinate z;
+
     //static Point3D for origin point (0,0,0)
-    public static final Point3D ZERO=new Point3D(0,0,0);
-    public Coordinate x;
-    public Coordinate y;
-    public Coordinate z;
+    public final static Point3D ZERO=new Point3D(0,0,0);
+
     /**
      * constructor for Point3D
      *
@@ -25,6 +30,7 @@ public class Point3D {
         this.y = y;
         this.z = z;
     }
+
     /**
      * primary constructor for Point3D
      * @param x coordinate value for X axis
@@ -36,42 +42,77 @@ public class Point3D {
         this.y = new Coordinate(y);
         this.z = new Coordinate(z);
     }
+
     /**
-     *
-     * @param pt2 Point3d from whom we create the Vector
-     *            pointing toward the actual Point3d instance
-     * @return
+     * Returns the field x of the point
+     * @return x - the first coordinate of the point
      */
-    public Vector subtract(Point3D ePoint3d)
-    {
-        return new Vector(x.coord-ePoint3d.x.coord, y.coord-ePoint3d.y.coord,z.coord-ePoint3d.z.coord);
-    }
-    public Point3D add(Vector eVector)
-    {
-        Point3D headPoint3d= eVector.getHead();
-        return new Point3D(headPoint3d.x.coord+x.coord, headPoint3d.y.coord+y.coord, headPoint3d.z.coord+z.coord);
+    public double getX() {
+        return x.coord;
     }
     /**
-     * @param other
-     * @return (x2 - x1)^2 + (y2-y1)^2 + (z2-z1)^2
+     * Returns the field y of the point
+     * @return y - the second coordinate of the point
      */
-    public double distanceSquared (Point3D ePoint3d)
-    {
-        return (ePoint3d.x.coord-x.coord)*(ePoint3d.x.coord-x.coord)+
-                (ePoint3d.y.coord-y.coord)*(ePoint3d.y.coord-y.coord)+
-                (ePoint3d.z.coord-z.coord)*(ePoint3d.z.coord-z.coord);
+    public double getY() {
+        return y.coord;
     }
     /**
-     * @param point3D
-     * @return  distance between 2  3D points
+     * Returns the field z of the point
+     * @return z - the third coordinate of the point
      */
-    public double distance (Point3D ePoint3d)
-    {
-        return Math.sqrt(distanceSquared(ePoint3d));
+    public double getZ() {
+        return z.coord;
     }
+
     /**
-     *
-     * @param o Object (basicaly another Point3d) to compare
+     * Addition of a vector to the point
+     * The algebraic operation - p + v = (p1+v1, p2+v2, p3+v3)
+     * @param v - the vector
+     * @return the new point after the vector addition
+     */
+    public Point3D add(Vector v)
+    {
+        return new Point3D(this.getX() + v.getHead().getX(), this.getY() + v.getHead().getY(), this.getZ() + v.getHead().getZ());
+    }
+
+    /**
+     * Subtraction between two points by algebraic operation
+     * The algebraic operation - q - p = (q1-p1, q2-p2, q3-p3)
+     * @param p - the second point
+     * @return a vector resulted in the subtraction
+     */
+    public Vector subtract(Point3D p) {
+        return new Vector(this.getX() - p.getX(), this.getY() - p.getY(), this.getZ() - p.getZ());
+    }
+
+    /**
+     * Find the square of the distance by algebraic operation
+     * The algebraic operation - ((q1-p1)^2 + (q2-p2)^2 + (q3-p3)^2)
+     * @param p - the second point
+     * @return the Square of the distance between the points
+     */
+    public double distanceSquared(Point3D p)
+    {
+        return ((this.getX() - p.getX())*(this.getX() - p.getX())
+                + (this.getY() - p.getY())*(this.getY() - p.getY())
+                + (this.getZ() - p.getZ())*(this.getZ() - p.getZ()));
+    }
+
+    /**
+     * Find the distance by using the distanceSquared function
+     * returns the positive square root of the result of the distanceSquared function
+     * @param p - the second point
+     * @return the distance between the points
+     */
+    public double distance(Point3D p)
+    {
+        return Math.sqrt(this.distanceSquared(p));
+    }
+
+    /**
+     *checks if an object is equal to this Point3D
+     * @param obj Object  to compare
      * @return true or false accordingly
      */
     @Override
@@ -79,12 +120,14 @@ public class Point3D {
         if (this == obj) {
             return true;
         }
+        if (obj == null) return false;
         if (!(obj instanceof Point3D)) {
             return false;
         }
         Point3D other = (Point3D) obj;
         return Objects.equals(x, other.x) && Objects.equals(y, other.y) && Objects.equals(z, other.z);
     }
+
     @Override
     public String toString() {
         return "Point3D [x=" + x + ", y=" + y + ", z=" + z + "]";
