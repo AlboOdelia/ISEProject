@@ -8,6 +8,7 @@ import static primitives.Util.isZero;
  * Class Vector is the basic class representing a Vector by three variables - x,y,z,
  * the vector starts at the beginning of the axes, and a point representing the head of vector
  * @author odelia albo 214089047
+ * updated
  */
 public class Vector {
 
