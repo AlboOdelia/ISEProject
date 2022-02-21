@@ -1,7 +1,10 @@
 package geometries;
 import primitives.*;
+
 /**
  * interface for all the geometries that have a normal from them
+ * @author Albo odelia
+ * updated
  */
 public abstract class Geometry implements Intersectable {
 
@@ -9,23 +12,23 @@ public abstract class Geometry implements Intersectable {
     protected Material material=new Material();
 
     /**
-     *
-     * @param point should be null for flat geometries
+     * abstract method getNormal for extending classes
+     * @param wPoint3d should be null for flat geometries
      * @return the normal to the geometry
      */
     public abstract Vector getNormal(Point3D wPoint3d);
 
     /**
-     * returns the emmission color of the geomtry
-     * @return
+     * returns the emission color of the geometry
+     * @return the color of the geometry
      */
     public Color getEmission() {
         return emission;
     }
 
     /**
-     * returns the material of the geomtry
-     * @return
+     * returns the material of the geometry
+     * @return the material of the geometry
      */
     public Material getMaterial() {
         return material;
@@ -33,17 +36,17 @@ public abstract class Geometry implements Intersectable {
 
 
     /**
-     *
-     * @param emmission- the color we want the Geometry to be
+     * Builder pattern setter to Emission param.
+     * @param emission- the color we want the Geometry to be
      * @return the Geometry itself
      */
-    public Geometry setEmission(Color emmission) {
-        this.emission = emmission;
+    public Geometry setEmission(Color emission) {
+        this.emission = emission;
         return this;
     }
 
     /**
-     *
+     * Builder pattern setter to material param.
      * @param material- the material we want the Geometry to be
      * @return the Geometry itself
      */

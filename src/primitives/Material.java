@@ -3,6 +3,7 @@ package primitives;
 /**
  * Class Material is the class representing the material of the geometry
  * @author Albo Odelia 214089047
+ * updated
  */
 public class Material {
     /**
