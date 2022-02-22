@@ -1,81 +1,73 @@
+/**
+ *
+ */
 package unittests;
 
-import primitives.*;
 import static org.junit.Assert.*;
+
 import org.junit.Test;
+
+import primitives.Point3D;
+import primitives.Vector;
+
+/**
+ * @author odelia
+ *
+ */
 public class Point3DTests {
+
+    /**
+     * Test method for {@link primitives.Point3D#subtract(primitives.Point3D)}.
+     */
+    @Test
+    public void testSubtract() {
+        Point3D v1=new Point3D(-1, 0, 1);
+        Point3D v2=new Point3D(1, 2, 3);
+        Vector result=new Vector(-2, -2, -2);
+        assertEquals(v1.subtract(v2), result);
+    }
 
     /**
      * Test method for {@link primitives.Point3D#add(primitives.Vector)}.
      */
     @Test
     public void testAdd() {
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: There is a simple addition
-        Point3D p1 = new Point3D(1, 0, -4);
-        assertEquals("Bad vector to point addition", p1.add(new Vector(-5,-2,7)), new Point3D(-4, -2, 3));
-
-        // ============ Boundary Partitions Tests ==============
-        // TC02: There is an addition between a point and the opposite vector.
-        Point3D p2 = new Point3D(4, 5, -2);
-        assertEquals("Bad vector to point addition when the point and the vector are opposite", p2.add(new Vector(-4,-5,2)), new Point3D(0, 0, 0));
-
+        Point3D v1=new Point3D(-1, 0, 1);
+        Vector v2=new Vector(1, 2, 3);
+        Point3D result=new Point3D(0, 2, 4);
+        assertEquals(v1.add(v2), result);
     }
 
     /**
-     * Test method for
-     * {@link primitives.Point3D#subtract(primitives.Point3D)}.
-     */
-    @Test
-    public void testSubtract() {
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: There is a simple subtraction
-        Point3D p1 = new Point3D(1, 0, -4);
-        assertEquals("Bad points subtraction", p1.subtract(new Point3D(-4, -2, 3)), new Vector(5,2,-7));
-
-        // ============ Boundary Partitions Tests ==============
-        // TC02: There is an subtraction between equals points
-        Point3D p2 = new Point3D(4, 5, -2);
-        try{
-                 p2.subtract(new Point3D(4,5,-2));
-        }
-        catch (Exception e)
-        {
-            return;
-        }
-        fail("doesnt trow exeption");
-
-    }
-
-    /**
-     * Test method for
-     * {@link primitives.Point3D#distanceSquared(primitives.Point3D)}.
+     * Test method for {@link primitives.Point3D#distanceSquared(primitives.Point3D)}.
      */
     @Test
     public void testDistanceSquared() {
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: There is a simple distance squared calculation
-        Point3D p1 = new Point3D(1, 0, -4);
-        assertTrue("Bad points distance squared", Util.isZero(p1.distanceSquared(new Point3D(-4, -2, 3)) - 78 ));
+        //Distance from zero
+        Point3D v2=new Point3D(0, 0, 0);
+        Point3D v1=new Point3D(-1, 0, 1);
+        assertEquals("", 2, v1.distanceSquared(v2),1e-10);
 
-        // ============ Boundary Partitions Tests ==============
-        // TC02: the points are equals
-        Point3D p2 = new Point3D(4, 5, -2);
-        assertTrue("Bad distance squared calculation for equals points", Util.isZero(p2.distanceSquared(new Point3D(4,5,-2))));
+        //Distance from another point
+        Point3D v3=new Point3D(1, 2, 3);
+
+        assertEquals("", 12, v1.distanceSquared(v3),1e-10);
     }
 
+    /**
+     * Test method for {@link primitives.Point3D#distance(primitives.Point3D)}.
+     */
     @Test
     public void testDistance() {
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: There is a simple distance calculation
-        Point3D p1 = new Point3D(1, 0, -4);
-        double sqrt78 = Math.sqrt(78);
-        assertTrue("Bad points distance", Util.isZero(p1.distance(new Point3D(-4, -2, 3)) - sqrt78 ));
+        //Distance from zero
+        Point3D v2=new Point3D(0, 0, 0);
+        Point3D v1=new Point3D(1, 0, 1);
+        assertEquals("", Math.sqrt(2), v1.distance(v2),1e-10);
 
-        // ============ Boundary Partitions Tests ==============
-        // TC02: the points are equals
-        Point3D p2 = new Point3D(4, 5, -2);
-        assertTrue("Bad distance calculation for equals points", Util.isZero(p2.distanceSquared(new Point3D(4,5,-2))));
+        //Distance from another point
+        Point3D v3=new Point3D(1, 2, 3);
+
+        assertEquals("", Math.sqrt(8), v1.distance(v3),1e-10);
     }
 
 }
