@@ -15,12 +15,7 @@ import primitives.Vector;
  * updated
  */
 public interface Intersectable {
-//    List<GeoPoint> findGeoIntsersections(Ray ray);
-//    default List<Point3D> findIntsersections(Ray ray) {
-//        var geoList = findGeoIntsersections(ray);
-//        return geoList == null ? null
-//                : geoList.stream().map(gp -> gp.point).collect(Collectors.toList());
-//    }
+
     /**
      * internal class that connects point to geometry
      *  represent an intersection point including the geometry it is intersected with.
@@ -71,7 +66,8 @@ public interface Intersectable {
     }
 
     /**
-     * The method receives a ray and returns intersection points with the geometry that are in the range determinated by the maxDistance
+     * The method receives a ray and returns intersection points with the geometry that
+     * are in the range determinate by the maxDistance
      * @param ray - the ray of intersection
      * @param maxDistance - the maximum distance in which we search intersection points
      * @return list of intersection points that are close enough
