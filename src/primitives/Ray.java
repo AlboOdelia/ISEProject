@@ -101,6 +101,8 @@ public class Ray {
      * @return closest point
      */
     public GeoPoint findClosestGeoPoint(List<GeoPoint> pointsList){
+        if (pointsList == null)
+                return null;
         GeoPoint result = null;
         double closeDistance = Double.MAX_VALUE;
         for (GeoPoint p: pointsList)
