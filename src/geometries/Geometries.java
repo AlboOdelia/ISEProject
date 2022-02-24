@@ -13,7 +13,7 @@ import geometries.Intersectable.GeoPoint;
 /**
  * Geometries is the collection of geometries as one geometry
  * @author Odelia Albo
- *
+ * updated
  */
 public class Geometries implements Intersectable
 {
