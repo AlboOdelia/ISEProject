@@ -14,7 +14,6 @@ import static primitives.Util.isZero;;
  *                                  -radius: a double value representing the radius
  *                                  -height: a double value representing the length of the Cylinder
  * @author Odelia Albo 214089047
- * needed: implement findGeoIntersectionss
  */
 public class Cylinder extends Tube{
 

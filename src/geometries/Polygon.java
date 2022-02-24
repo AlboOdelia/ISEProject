@@ -11,7 +11,6 @@ import static primitives.Util.*;
  * system
  *
  * @author Dan
- *  needed: implement findGeoIntersectionss
  */
 public class Polygon extends Geometry {
     /**
@@ -92,10 +91,11 @@ public class Polygon extends Geometry {
 
 
     @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
-        List <GeoPoint> st= plane.findGeoIntersections(ray);
-        if (st== null)
-            return st;
+    public List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
+        List <GeoPoint> result = plane.findGeoIntersections(ray,maxDistance);
+       //if there isn't any intersection with the plane-> there is no intersection with polygon
+        if (result == null)
+            return null;
         //setting values
         Point3D point0=ray.getP0();
         Vector directrion= ray.getDir();
@@ -103,27 +103,31 @@ public class Polygon extends Geometry {
         Point3D point2=vertices.get(0);
         Vector vector1=point1.subtract(point0);
         Vector vector2=point2.subtract(point0);
-        double flag=alignZero(directrion.dotProduct(vector1.crossProduct(vector2)));
+        double flag=alignZero(directrion.dotProduct((vector1.crossProduct(vector2).normalize())));
+        //if one or more are 0.0 –> no intersection
         if(isZero(flag))
             return null;
-        boolean pos= flag > 0;
+        //get sign
+        boolean positive = flag > 0;
         //it iterate through all vertices of the polygon
         for(int i=vertices.size()-1;i>0;--i)
         {
+            //foreach two following vertex get p0 with each one
+            //then calculate the normalized crossProduct between them
+            //then check each normalized crossProduct the value of it dotProduct with dir isn't 0
+            // and that the sign is the same for every calculation
             vector1=vector2;
             vector2=vertices.get(i).subtract(point0);
-            flag= alignZero(directrion.dotProduct(vector1.crossProduct(vector2)));
+            flag= alignZero(directrion.dotProduct((vector1.crossProduct(vector2).normalize())));
+            //if one or more are 0.0 –> no intersection
             if(isZero(flag))
                 return null;
-            boolean ch=flag>0;
-            if(pos!=ch)
+            boolean sign=flag>0;
+            //all sign should be same, if not-> no intersection
+            if(positive !=sign)
                 return null;
         }
-        return List.of(new GeoPoint(st.get(0).point, this));
-    }
-
-    @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
-        return null;
+        //if all the requirements are met return the intersection point of plan with geo set as polygon
+        return List.of(new GeoPoint(result.get(0).point, this));
     }
 }

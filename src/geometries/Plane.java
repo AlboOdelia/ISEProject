@@ -14,7 +14,6 @@ import static primitives.Util.*;
  * each Place is represented by: -point: Point3D on the plane
  *                               -normal: Vector to the plane
  * @author Odelia Albo 214089047
- * needed: implement findGeoIntersectionss
  */
 public class Plane extends Geometry{
     //point on the plane
@@ -88,35 +87,53 @@ public class Plane extends Geometry{
                 '}';
     }
 
+
     @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
         //settings
         Point3D rayP0 = ray.getP0();
         Vector rayDir = ray.getDir();
         Vector nVector = getNormal();
 
-        //if there is nothing
+        //if ray  begins in the same point which appears as
+        // reference point in the plane-> there is no intersection point
         if(q0.equals(rayP0))
             return null;
+
+        //creat dir vector from p0 to q0
         Vector p0q0=q0.subtract(rayP0);
-        //the numerator
+
+        //the numerator.
+        //if dir vector from p0 to q0 and normal to plane are orthogonal
+        //meaning the P0 is on the plane
+        //-> the result will be zero
         double normalp0q0= alignZero(nVector.dotProduct(p0q0));
+
+        //if P0 is on the plane we don't count that as an intersection
         if(isZero(normalp0q0))
             return null;
+
         //the denominator
+        //if dir vector of ray and normal to plane are orthogonal
+        //meaning dir vector is parallel to plane
+        //-> the result will be zero
         double k=alignZero(nVector.dotProduct(rayDir));
-        //if the ray is on the plane axis
+
+        //if dir vector is parallel to plane we don't count that as
         if(isZero(k))
             return null;
+
+        //representing the distance from start: the scalar to multiply ray to get intersection
         double t= alignZero(normalp0q0/k);
+
+        //if scalar is negative-> the ray is in the opposite direction
+        //meaning there is no intersection
         if (t<=0)
+            return null;
+        //if distance is further then the max distance assigned
+        if (alignZero(t - maxDistance) > 0)
             return null;
         Point3D p=ray.getPoint(t);
         return List.of(new GeoPoint(p, this));
-    }
-
-    @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
-        return null;
     }
 }

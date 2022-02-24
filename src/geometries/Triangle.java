@@ -10,7 +10,6 @@ import primitives.Ray;
  * Sphere Triangle if a class representing a Triangle in a 3D space
  * each Triangle is represented by: 3 pointed poligon
  * @author Odelia Albo 214089047
- * needed: implement findGeoIntersectionss
  * */
 public class Triangle extends Polygon {
     /***

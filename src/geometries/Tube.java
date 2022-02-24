@@ -12,7 +12,6 @@ import static primitives.Util.isZero;
  * each Tube is represented by:  -axisRay: Ray that represent the center ray of the Tube
  *                               -radius: a double value representing the radius
  * @author Odelia Albo 214089047
- * needed: implement findGeoIntersectionss
  */
 public class Tube extends Geometry{
     //Ray that represent the center ray of the Tube

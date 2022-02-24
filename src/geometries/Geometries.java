@@ -72,6 +72,7 @@ public class Geometries implements Intersectable
             return interactionsList;
         return null;
     }
+    // TODO: decide if is needed
     //  not sure way is implemented
 //    /**
 //     *
