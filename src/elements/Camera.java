@@ -14,9 +14,10 @@ public class Camera {
     final private Vector vTo;
     // Y-axis of camera's 3D axis system: scene bottom to top
     final private Vector vUp;
-    // X-axis of camera's 3D axis system: scene left to righ
+    // X-axis of camera's 3D axis system: scene left to right
     final private Vector vRight;
 
+    //view-plane elements
     private double distance;
     private double width;
     private double height;
@@ -31,6 +32,7 @@ public class Camera {
         this.distance = builder.distance;
     }
 
+    //camera elements gets
     public Point3D getP0() {
         return p0;
     }
@@ -47,25 +49,11 @@ public class Camera {
         return vRight;
     }
 
+    //view-plane elements gets
     public double getDistance() {
         return distance;
     }
 
-    //Camera setter chaining methods
-    public Camera setDistance(double distance) {
-        this.distance = distance;
-        return this;
-    }
-
-    public Camera setViewPlaneSize(double width, double height) {
-        if(width <= 0 || height <= 0)
-            throw new IllegalArgumentException("width and height of the view plane must be positive");
-        this.width = width;
-        this.height = height;
-        return this;
-    }
-
-    //Camera getters methods
     public double getWidth() {
         return this.width;
     }
@@ -74,25 +62,70 @@ public class Camera {
         return this.height;
     }
 
-    // constructing a ray passing through pixel(i,j) of the view plane
+    //Camera setter chaining methods
+
+    /**
+     * set distence of camera from view-plane
+     * @param distance- the distance represented in double
+     * @return the camera itself- chaining methods (Builder)
+     */
+    public Camera setDistance(double distance) {
+        this.distance = distance;
+        return this;
+    }
+
+    /**
+     * set size of view-plane
+     * @param width- the width represented in double
+     * @param height- the height represented in double
+     * @return the camera itself- chaining methods (Builder)
+     * @exception if width or height is negative
+     */
+    public Camera setViewPlaneSize(double width, double height) {
+        if(width <= 0 || height <= 0)
+            throw new IllegalArgumentException("width and height of the view plane must be positive");
+        this.width = width;
+        this.height = height;
+        return this;
+    }
+
+
+    /**
+     * Construction of ray through pixel in the view plane from the camera by
+     * calculating the central point of the given pixel that is represented by (j,i)
+     * @param nX - number of pixel per row
+     * @param nY - number of pixel per column
+     * @param j - location of pixel on axis X
+     * @param i - location of pixel on axis Y
+     * @return a ray from camera starting point (p0) to the center point of the pixel
+     */
     public Ray constructRayThroughPixel(int nX, int nY, int j, int i) {
+        //get center point of view-plane
         Point3D Pc = this.p0.add(this.vTo.scale(this.distance));
 
+        //representing the height and with of each pixel
         double Rx = this.width / nX;
         double Ry = this.height / nY;
 
+        //set pij as center and them move it with the use of Xj Yi
         Point3D Pij = Pc;
 
+        //calculate how much Pij needs to move to be in the right position
         double Xj = (j - (nX - 1) / 2d) * Rx;
         double Yi = -(i - (nY - 1) / 2d) * Ry;
 
+        //if both are zero it means that the pixel we are trying to construct a ray trough is the center point
         if (isZero(Xj) && isZero(Yi)) {
             return new Ray(this.p0, Pij.subtract(this.p0));
         }
+        //if only Xj is zero it means that the pixel we are trying to
+        //construct a ray trough is in the same column as the center point
         if (isZero(Xj)) {
             Pij = Pij.add(this.vUp.scale(Yi));
             return new Ray(this.p0, Pij.subtract(this.p0));
         }
+        //if only Yi is zero it means that the pixel we are trying to
+        //construct a ray trough is in the same row as the center point
         if (isZero(Yi)) {
             Pij = Pij.add(this.vRight.scale(Xj));
             return new Ray(this.p0, Pij.subtract(this.p0));
@@ -178,7 +211,7 @@ public class Camera {
             this.vTo = vTo.normalized();
             this.vUp = vUp.normalized();
 
-            this.vRight = this.vTo.crossProduct(this.vUp);
+            this.vRight = (this.vTo.crossProduct(this.vUp)).normalized();
 
         }
     }
