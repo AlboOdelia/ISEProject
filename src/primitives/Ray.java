@@ -75,30 +75,11 @@ public class Ray {
         return p0.add(dir.scale(delta));
     }
 
-//    /**
-//     * find the closest Point to Ray origin
-//     * @param pointsList intersections point List
-//     * @return closest point
-//     */
-//    public Point3D findClosestPoint(List<Point3D> pointsList){
-//        Point3D result = null;
-//        double closeDistance = Double.MAX_VALUE;
-//        for (Point3D p: pointsList)
-//        {
-//            double temp = p.distance(p0);
-//            if(temp < closeDistance)
-//            {
-//                closeDistance =temp;
-//                result =p;
-//            }
-//        }
-//        return  result;
-//    }
 
     /**
      * find the closest Point to Ray origin
      * @param pointsList intersections point List
-     * @return closest point
+     * @return closest point- null if no intersection
      */
     public GeoPoint findClosestGeoPoint(List<GeoPoint> pointsList){
         if (pointsList == null)

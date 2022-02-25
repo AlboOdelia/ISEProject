@@ -5,6 +5,15 @@ import primitives.Vector;
 
 import static primitives.Util.isZero;
 
+/**
+ * Camera class if a class representing a Camera in a 3D space
+ * each Camera is represented by:   - center point of camera
+ *                                  -3 direction vectors
+ * each view-plane is represented by:   -distance from camera
+ *                                      - width
+ *                                      - height
+ * @author Odelia Albo 214089047
+ */
 public class Camera {
     //center point of camera
     final private Point3D p0;
@@ -92,7 +101,7 @@ public class Camera {
 
     /**
      * Construction of ray through pixel in the view plane from the camera by
-     * calculating the central point of the given pixel that is represented by (j,i)
+     * calculating the central point of the given pixel
      * @param nX - number of pixel per row
      * @param nY - number of pixel per column
      * @param j - location of pixel on axis X
