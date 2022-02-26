@@ -15,16 +15,20 @@ import primitives.Color;
  *                                  -background color for scene
  *                                  -ambient-light for scene
  *                                  -geometries that are in the scene
- *                                  -lights that are and effect the scene
+ *                                  -lights that are in and effect the scene
  * @author Odelia Albo 214089047
  */
 public class Scene {
 
+    //name of scene
     private final String name;
-
+    //ambient-light for scene
     public AmbientLight ambientlight= new AmbientLight();
+    //background color for scene
     public Color background=Color.BLACK;
+    //geometries that are in the scene
     public Geometries geometries = null;
+    //lights that are in and effect the scene
     public List<LightSource> lights=new LinkedList<LightSource>();
 
     //Constructor

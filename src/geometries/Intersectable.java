@@ -74,4 +74,16 @@ public interface Intersectable {
      */
     List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance);
 
+    /**
+     * refactoring: every findIntersections uses findGeoIntersections and returns only the point list
+     * @param ray
+     * @return
+     */
+    default List<Point3D> findIntersections(Ray ray) {
+        var geoList = findGeoIntersections(ray);
+        return geoList == null ? null
+                : geoList.stream().map(gp -> gp.point).collect(Collectors.toList());
+    }
+
+
 }

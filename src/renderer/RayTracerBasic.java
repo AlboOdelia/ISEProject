@@ -43,12 +43,86 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
-     * @param closestPoint- the geometric point
+     * calculating the color using The Phong Reflectance Mode
+     * ambient + diffuse + specular = phong reflection
+     * @param intersection- the geometric point
      * @param ray- the ray that we are working on
      * @return calculating the color- final color of point with ambient light
      */
-    private Color calcColor(GeoPoint closestPoint, Ray ray) {
-        return scene.ambientlight.getIntensity();
+    private Color calcColor(GeoPoint intersection, Ray ray) {
+        return scene.ambientlight.getIntensity() //ambient
+                .add(intersection.geometry.getEmission()) //emission
+                .add(calcLocalEffects(intersection, ray)); //diffuse + specular
+    }
+
+    /**
+     * calculating the diffuse + specular in The Phong Reflectance Mode
+     * for each light calculate and add :
+     * lightIntensity plus calcDiffusive and calcSpecular
+     * @param gp- the geometric point
+     * @param ray- the ray that we are working on
+     * @return calculating the color- final color of point with ambient light
+     */
+    private Color calcLocalEffects(GeoPoint gp, Ray ray) {
+        Vector v = ray.getDir ();
+        Vector n = gp.geometry.getNormal(gp.point); //normal to point
+        double nv = alignZero(n.dotProduct(v));
+        if (nv == 0) //vectors orthogonal - no effect
+            return Color.BLACK;
+        Material material = gp.geometry.getMaterial();
+        int nShininess = material.nShininess;
+        Color color = Color.BLACK; //the end color
+        for (LightSource lightSource : scene.lights) {
+            Vector l = lightSource.getL(gp.point);
+            double nl = alignZero(n.dotProduct(l));
+            if (nl * nv > 0) { // sign(nl) == sing(nv), if light affects the point and the camera sees it
+                Color lightIntensity = lightSource.getIntensity(gp.point); //get the lightIntensity
+                color = color.add(calcDiffusive(material.kD, l, n, lightIntensity), //adds the diffuse relative to the light for the end color
+                        calcSpecular(material.kS, l, n, v, nShininess, lightIntensity)); //adds the specular relative to the light for the end color
+            }
+        }
+        return color;
+    }
+
+    /**
+     * Calculation of specular light component using the following func:
+     * ks*(-dotProduct(-v,r)^nShininess)
+     * r = reflectance vector
+     * @param kS - Attenuation coefficient for specular light component
+     * @param l - direction vector from light to point
+     * @param n - normal to point
+     * @param v - direction of ray shoted to point
+     * @param nShininess -  Light is exponentially reduced (at the order of nShininess - the object’s shininess )
+     * @param lightIntensity - the color and intensity of light source
+     * @return Color - the calculated color of specular light component
+     */
+    private Color calcSpecular(double kS, Vector l, Vector n, Vector v, int nShininess, Color lightIntensity) {
+        Vector r = calcVectorR(l, n);
+        return lightIntensity.scale(kS* Math.pow((v.scale(-1)).dotProduct(r), nShininess));
+    }
+
+    /**
+     * Calculating reflectance vector:
+     * r= l-2(l*n)*n
+     * @param l- direction vector from light to point
+     * @param n- normal to point
+     * @return
+     */
+    private Vector calcVectorR(Vector l, Vector n) {
+        return l.subtract(n.scale(2*l.dotProduct(n))).normalized();
+    }
+
+    /**
+     * Calculation of diffusion light component using the following func:
+     * kD * abs(dotProduct(l, n))
+     * @param kd - Attenuation coefficient for diffusion light component
+     * @param l - direction vector from light to point
+     * @param n - normal to point
+     * @param lightIntensity - the color and intensity of light source
+     * @return Color - the calculated color of diffusion light component
+     */
+    private Color calcDiffusive(double kd, Vector l, Vector n, Color lightIntensity) {
+        return lightIntensity.scale(kd*Math.abs(l.dotProduct(n)));
     }
 
     /**
