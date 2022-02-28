@@ -15,9 +15,11 @@ import scene.*;
  */
 public class RayTracerBasic extends RayTracerBase {
 
-    private static final double INITIAL_K = 1.0;
+//    private static final double INITIAL_K = 1.0;
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
+
+    private static final double DELTA = 0.1;
 
     /**
      * constructor used to initialize the scene filed
@@ -58,31 +60,59 @@ public class RayTracerBasic extends RayTracerBase {
     /**
      * calculating the diffuse + specular in The Phong Reflectance Mode
      * for each light calculate and add :
-     * lightIntensity plus calcDiffusive and calcSpecular
-     * @param gp- the geometric point
+     * if it not a shadow spot: lightIntensity plus calcDiffusive and calcSpecular
+     * @param geopoint- the geometric point
      * @param ray- the ray that we are working on
      * @return calculating the color- final color of point with ambient light
      */
-    private Color calcLocalEffects(GeoPoint gp, Ray ray) {
+    private Color calcLocalEffects(GeoPoint geopoint, Ray ray) {
         Vector v = ray.getDir ();
-        Vector n = gp.geometry.getNormal(gp.point); //normal to point
+        Vector n = geopoint.geometry.getNormal(geopoint.point); //normal to point
         double nv = alignZero(n.dotProduct(v));
         if (nv == 0) //vectors orthogonal - no effect
             return Color.BLACK;
-        Material material = gp.geometry.getMaterial();
+        Material material = geopoint.geometry.getMaterial();
         int nShininess = material.nShininess;
         Color color = Color.BLACK; //the end color
         for (LightSource lightSource : scene.lights) {
-            Vector l = lightSource.getL(gp.point);
+            Vector l = lightSource.getL(geopoint.point);//vector from light source to point
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sing(nv), if light affects the point and the camera sees it
-                Color lightIntensity = lightSource.getIntensity(gp.point); //get the lightIntensity
-                color = color.add(calcDiffusive(material.kD, l, n, lightIntensity), //adds the diffuse relative to the light for the end color
-                        calcSpecular(material.kS, l, n, v, nShininess, lightIntensity)); //adds the specular relative to the light for the end color
+                if (unshaded(lightSource,l,n,geopoint)) {
+                    Color lightIntensity = lightSource.getIntensity(geopoint.point); //get the lightIntensity
+                    color = color.add(calcDiffusive(material.kD, l, n, lightIntensity), //adds the diffuse relative to the light for the end color
+                            calcSpecular(material.kS, l, n, v, nShininess, lightIntensity)); //adds the specular relative to the light for the end color
+                }
             }
         }
         return color;
     }
+
+    /**
+     * func determining if there is shadow in a specific point based on the question of
+     * if there's a geometry between point and light source
+     * @param light-light source
+     * @param l- vector from light source to point
+     * @param n- normal to geometry point
+     * @param geopoint- the geometric point
+     * @return
+     */
+    private boolean unshaded(LightSource light, Vector l, Vector n, GeoPoint geopoint) {
+        Vector lightDirection = l.scale(-1); // from point to light source
+
+        // add const delta to start of ray to make it closer to light source to prevent unwanted shadows
+        Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : - DELTA);
+        Point3D point = geopoint.point.add(delta);
+
+        //check if there's a geometry between point and light source
+        Ray lightRay = new Ray(point, lightDirection);
+        List<GeoPoint> intersections = scene.geometries
+                .findGeoIntersections(lightRay, light.getDistance(geopoint.point));
+        return intersections == null;   //return true if there's none else false
+    }
+
+
+
 
     /**
      * Calculation of specular light component using the following func:
@@ -97,7 +127,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @return Color - the calculated color of specular light component
      */
     private Color calcSpecular(double kS, Vector l, Vector n, Vector v, int nShininess, Color lightIntensity) {
-        Vector r = calcVectorR(l, n);
+        Vector r = calcReflectanceVector(l, n);
         return lightIntensity.scale(kS* Math.pow((v.scale(-1)).dotProduct(r), nShininess));
     }
 
@@ -108,7 +138,18 @@ public class RayTracerBasic extends RayTracerBase {
      * @param n- normal to point
      * @return
      */
-    private Vector calcVectorR(Vector l, Vector n) {
+    private Vector calcReflectanceVector(Vector l, Vector n) {
+        return l.subtract(n.scale(2*l.dotProduct(n))).normalized();
+    }
+
+    /**
+     * Calculating reflectance vector:
+     * r= l-2(l*n)*n
+     * @param l- direction vector from light to point
+     * @param n- normal to point
+     * @return
+     */
+    private Vector calcRefractedVector(Vector l, Vector n) {
         return l.subtract(n.scale(2*l.dotProduct(n))).normalized();
     }
 
