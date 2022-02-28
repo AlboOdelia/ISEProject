@@ -12,6 +12,7 @@ import scene.*;
 /**
  * the RayTracerBasic implements the class RayTracerBase and implements the traceRay method.
  * @author Odelia Albo 214089047
+ * see canges
  */
 public class RayTracerBasic extends RayTracerBase {
 
