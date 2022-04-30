@@ -80,7 +80,7 @@ public class Point3D {
      * Subtraction between two points by algebraic operation
      * The algebraic operation - q - p = (q1-p1, q2-p2, q3-p3)
      * @param p - the second point
-     * @return a vector resulted in the subtraction
+     * @return a vector direction from p to this point
      */
     public Vector subtract(Point3D p) {
         return new Vector(this.getX() - p.getX(), this.getY() - p.getY(), this.getZ() - p.getZ());

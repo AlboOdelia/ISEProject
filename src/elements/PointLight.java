@@ -116,7 +116,7 @@ public class PointLight extends Light implements LightSource {
      * @return scalar attenuation factor (double)
      */
     private double calcAttenuation(Point3D p) {
-        double d = p.distance(position);
+        double d = getDistance(p);
         return  (double)(1.0/(double)(kC+ kL*d + kQ*d*d));
     }
 

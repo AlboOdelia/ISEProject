@@ -21,7 +21,7 @@ public class ImageWriter {
     private int nX;
     private int nY;
 
-    private static final String FOLDER_PATH = "D:/odelia/mafmelatImages";
+    private static final String FOLDER_PATH = "C:\\Users\\Odelia Albo\\IdeaProjects\\ISEProject\\images";
 
     private BufferedImage image;
     private String imageName;
