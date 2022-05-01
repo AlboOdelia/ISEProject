@@ -40,7 +40,7 @@ public class LightsTests {
         scene1.geometries.add(sphere);
         scene1.lights.add(new DirectionalLight(new Color(500, 300, 0), new Vector(1, 1, -1)));
 
-        ImageWriter imageWriter = new ImageWriter("lightSphereDirectional", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("lightSphereDirectionalSS", 500, 500);
         Render render = new Render()//
                 .setImageWriter(imageWriter) //
                 .setCamera(camera1) //
@@ -58,7 +58,7 @@ public class LightsTests {
         scene1.lights.add(new PointLight(new Color(500, 300, 0), new Point3D(-50, -50, 50))//
                 .setkL(0.00001).setkQ(0.000001));
 
-        ImageWriter imageWriter = new ImageWriter("lightSpherePoint", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("lightSpherePointSS", 500, 500);
         Render render = new Render()//
                 .setImageWriter(imageWriter) //
                 .setCamera(camera1) //
@@ -76,7 +76,7 @@ public class LightsTests {
         scene1.lights.add(new SpotLight(new Color(500, 300, 0), new Point3D(-50, -50, 50), new Vector(1, 1, -2)) //
                 .setkL(0.00001).setkQ(0.00000001));
 
-        ImageWriter imageWriter = new ImageWriter("lightSphereSpot", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("lightSphereSpotSS", 500, 500);
         Render render = new Render()//
                 .setImageWriter(imageWriter) //
                 .setCamera(camera1) //
@@ -94,7 +94,7 @@ public class LightsTests {
                 0.00000000001,  0.000000001 ,new Vector(1, 1, -2)));
         scene1.lights.add(new PointLight(new Color(500, 300, 0), new Point3D(-50, 50, 50), 1, 0.00001, 0.000001));
         scene1.lights.add(new DirectionalLight(new Color(255,20,147), new Vector(-50, 3, -1)));
-        ImageWriter imageWriter = new ImageWriter("sphereLights", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("sphereLightsSS", 500, 500);
         Render render = new Render()//
                 .setImageWriter(imageWriter) //
                 .setCamera(camera1) //
@@ -112,7 +112,7 @@ public class LightsTests {
                 triangle2.setMaterial(new Material().setkD(0.8).setkS(0.2).setnShininess(300)));
         scene2.lights.add(new DirectionalLight(new Color(300, 150, 150), new Vector(0, 0, -1)));
 
-        ImageWriter imageWriter = new ImageWriter("lightTrianglesDirectional", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("lightTrianglesDirectionalSS", 500, 500);
         Render render = new Render()//
                 .setImageWriter(imageWriter) //
                 .setCamera(camera2) //
@@ -131,7 +131,7 @@ public class LightsTests {
         scene2.lights.add(new PointLight(new Color(500, 250, 250), new Point3D(10, -10, -130)) //
                 .setkL(0.0005).setkQ(0.0005));
 
-        ImageWriter imageWriter = new ImageWriter("lightTrianglesPoint", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("lightTrianglesPointSS", 500, 500);
         Render render = new Render()//
                 .setImageWriter(imageWriter) //
                 .setCamera(camera2) //
@@ -150,7 +150,7 @@ public class LightsTests {
         scene2.lights.add(new SpotLight(new Color(500, 250, 250), new Point3D(10, -10, -130), new Vector(-2, -2, -1)) //
                 .setkL(0.0001).setkQ(0.000005));
 
-        ImageWriter imageWriter = new ImageWriter("lightTrianglesSpot", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("lightTrianglesSpotSS", 500, 500);
         Render render = new Render()//
                 .setImageWriter(imageWriter) //
                 .setCamera(camera2) //
@@ -170,7 +170,7 @@ public class LightsTests {
         scene2.lights.add(new PointLight(new Color(500, 250, 250), new Point3D(10, -10, -130), 1, 0.0005, 0.0005));
         scene2.lights.add(new DirectionalLight(new Color(153,50,204), new Vector(0, 0, -1)));
 
-        ImageWriter imageWriter = new ImageWriter("trianglesLights", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("trianglesLightsSS", 500, 500);
         Render render = new Render()//
                 .setImageWriter(imageWriter) //
                 .setCamera(camera2) //
