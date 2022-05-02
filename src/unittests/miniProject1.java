@@ -26,7 +26,7 @@ public class miniProject1 {
                 new Vector(0, 1, 0)) //
                 .build().setViewPlaneSize(200, 127).setDistance(800);
         //teal
-        scene.setAmbientLight(new AmbientLight(new Color(209, 240, 251), 0.1));
+        scene.setAmbientLight(new AmbientLight(new Color(209, 240, 251), 0.01));
 
         setGeometries(scene);
 
@@ -37,16 +37,19 @@ public class miniProject1 {
         //light brown
         scene.lights.add(new SpotLight(new Color(200, 180, 180), new Point3D(914, 826, -130), new Vector(-959.0, -826.0, -65.0)) //
                 .setkL(4E-5).setkQ(2E-7));
+        //light brown dir to bit sper
+        scene.lights.add(new SpotLight(new Color(200, 180, 180), new Point3D(-914, 826, -130), new Vector(959.0, -826.0, -65.0)) //
+                .setkL(4E-5).setkQ(2E-7));
         //grey
         scene.lights.add(new PointLight(new Color(60,60,60), new Point3D(215, 368, 0))//
-                .setkL(0.00001).setkQ(0.000001));
+                .setkL(0.0001).setkQ(0.0001));
 
 
-        ImageWriter imageWriter2 = new ImageWriter("miniProject1.p1", 900, 600);
+        ImageWriter imageWriter2 = new ImageWriter("miniProject1.p2", 900, 600);
         Render render = new Render() //
                 .setImageWriter(imageWriter2) //
                 .setCamera(camera) //
-                .setRayTracer(new RayTracerBasic(scene)).setMode(1);
+                .setRayTracer(new RayTracerBasic(scene)).setMode(0);
 
         render.renderImage();
         render.writeToImage();
@@ -108,9 +111,9 @@ public class miniProject1 {
                         new Point3D(-100, 30, 75),
                         new Point3D(-62, 30, 75),
                         new Point3D(-62, -50, 75))
-                        .setEmission(new Color(0, 0, 0))
+                        .setEmission(new Color(10, 10, 10))
                         .setMaterial(new Material()
-                                .setkT(0.9)),
+                                .setkT(0.8)),
                 new Polygon(
                         new Point3D(-62, -50, 75),
                         new Point3D(-62, 30, 75),
@@ -125,18 +128,18 @@ public class miniProject1 {
                         new Point3D(-58, 30, 75),
                         new Point3D(-38 ,30, 75),
                         new Point3D(-38, -50, 75))
-                        .setEmission(new Color(40, 40, 40))
+                        .setEmission(new Color(30, 30, 30))
                         .setMaterial(new Material()
-                                .setkT(0.9)),
+                                .setkT(0.8)),
                 //2
                 new Polygon(
                         new Point3D(-38, -50, 75),
                         new Point3D(-38, 30, 75),
                         new Point3D(0, 30, 75),
                         new Point3D(0, -50, 75))
-                        .setEmission(new Color(40, 40, 40))
+                        .setEmission(new Color(30, 30, 30))
                         .setMaterial(new Material()
-                                .setkT(0.9)),
+                                .setkT(0.8)),
                 new Polygon(
                         new Point3D(0, -50, 75),
                         new Point3D(0, 30, 75),
@@ -151,18 +154,18 @@ public class miniProject1 {
                         new Point3D(4, 30, 75),
                         new Point3D(42 ,30, 75),
                         new Point3D(42, -50, 75))
-                        .setEmission(new Color(80, 80, 80))
+                        .setEmission(new Color(50, 50, 50))
                         .setMaterial(new Material()
-                                .setkT(0.9)),
+                                .setkT(0.8)),
                 //3
                 new Polygon(
                         new Point3D(42, -50, 75),
                         new Point3D(42, 30, 75),
                         new Point3D(62, 30, 75),
                         new Point3D(62, -50, 75))
-                        .setEmission(new Color(80, 80, 80))
+                        .setEmission(new Color(50, 50, 50))
                         .setMaterial(new Material()
-                                .setkT(0.9)),
+                                .setkT(0.8)),
                 new Polygon(
                         new Point3D(62, -50, 75),
                         new Point3D(62, 30, 75),
@@ -177,9 +180,9 @@ public class miniProject1 {
                         new Point3D(66, 30, 75),
                         new Point3D(100 ,30, 75),
                         new Point3D(100, -50, 75))
-                        .setEmission(new Color(100, 100, 100))
+                        .setEmission(new Color(70, 70, 70))
                         .setMaterial(new Material()
-                                .setkT(0.9)),
+                                .setkT(0.8)),
 
                 //back panel
                 new Polygon(
