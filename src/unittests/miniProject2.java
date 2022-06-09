@@ -11,7 +11,7 @@ import primitives.*;
 import renderer.*;
 import scene.Scene;
 
-public class miniProject1 {
+public class miniProject2{
     private Scene scene = new Scene("Test scene");
 
 
@@ -46,11 +46,11 @@ public class miniProject1 {
                 .setkL(0.0001).setkQ(0.0001));
 
 
-        ImageWriter imageWriter2 = new ImageWriter("miniProject1.finalPic.threadeed", 900, 600);
+        ImageWriter imageWriter2 = new ImageWriter("miniProject2.SSA.notThreaded", 900, 600);
         Render render = new Render() //
                 .setImageWriter(imageWriter2) //
                 .setCamera(camera) //
-                .setRayTracer(new RayTracerBasic(scene)).setMode(1);
+                .setRayTracer(new RayTracerBasic(scene)).setMode(2).setMultithreading(3);
         render.renderImage();
         render.writeToImage();
     }//end
@@ -186,14 +186,14 @@ public class miniProject1 {
 
                 //back panel
                 new Polygon(
-                    new Point3D(-38, -50, -75),
-                    new Point3D(-38, 30, -75),
-                    new Point3D(42, 30, -75),
-                    new Point3D(42, -50, -75))
-                    .setEmission(new Color(77, 0, 102))
-                    .setMaterial(new Material()
-                            .setkD(0.6).setkS(0.4).setkT(0.2)
-                            .setnShininess(50)),
+                        new Point3D(-38, -50, -75),
+                        new Point3D(-38, 30, -75),
+                        new Point3D(42, 30, -75),
+                        new Point3D(42, -50, -75))
+                        .setEmission(new Color(77, 0, 102))
+                        .setMaterial(new Material()
+                                .setkD(0.6).setkS(0.4).setkT(0.2)
+                                .setnShininess(50)),
                 //top panel
                 new Polygon(
                         new Point3D(-38, 30, -75),

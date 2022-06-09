@@ -120,8 +120,10 @@ public class Camera {
         Point3D Pij = Pc;
 
         //calculate how much Pij needs to move to be in the right position
-        double Xj = (j - (nX - 1) / 2d) * Rx;
-        double Yi = -(i - (nY - 1) / 2d) * Ry;
+        //double Xj = (j - (nX - 1) / 2d) * Rx;
+        //double Yi = -(i - (nY - 1) / 2d) * Ry;
+        double Yi = -(double)(i - ((nY - 1) /(double)2)) * Ry;
+        double Xj = (double)(j - (nX - 1) /(double)2) * Rx;
 
         //if both are zero it means that the pixel we are trying to construct a ray trough is the center point
         if (isZero(Xj) && isZero(Yi)) {
